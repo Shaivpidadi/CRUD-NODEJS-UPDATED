@@ -2,22 +2,11 @@ const MongoClient = require('mongodb').MongoClient;
 
 const connectDB = 'mongodb://localhost:27017';
 const dbName = 'mytestingdb';
-let _db;
 
-
-function connectToServer() {
-    MongoClient.connect( connectDB,  { useNewUrlParser: true }, function(client) {
-        console.log("Client",client);
-        _db  =  client.db(dbName);
-    } );
+    async function connectToDB() {
+    let client = await MongoClient.connect(connectDB);
+    return client.db(dbName);
 }
-
-function getDb() {
-    return _db;
-}
-
-// let client = await MongoClient.connect(connectDB);
-// const db = client.db(dbName);
 
 function getUserData(db) {
     return db.collection('customers').find({}).toArray();
@@ -46,6 +35,5 @@ module.exports = {
     checkData,
     updateUserData,
     deleteUserData,
-    connectToServer,
-    getDb
+    connectToDB
 }
